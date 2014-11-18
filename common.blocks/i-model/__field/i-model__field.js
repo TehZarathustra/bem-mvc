@@ -211,6 +211,9 @@
          * @returns {boolean}
          */
         isChanged: function() {
+            if (this.params.ignoreIfChanged) {
+                return false;
+            }
             return !this.isEqual(this.getFixedValue());
         },
 
