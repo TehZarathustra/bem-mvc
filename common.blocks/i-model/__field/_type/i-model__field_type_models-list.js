@@ -83,6 +83,7 @@
                  */
                 add: function(itemData, opts) {
                     var model = list._createModel(itemData);
+                    var index = field._raw.length;
 
                     field._raw.push(model);
 
