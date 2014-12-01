@@ -89,7 +89,7 @@
                     currentField._bindFieldEventHandlers(model);
 
                     field
-                        .trigger('add', $.extend({}, opts, { model: model }))
+                        .trigger('add', $.extend({}, opts, { model: model, index: index }))
                         ._trigger('change', opts);
 
                     return model;
@@ -132,7 +132,7 @@
 
                         currentField._unBindFieldEventHandlers(model);
 
-                        field.trigger('remove', $.extend({}, opts, { model: model }));
+                        field.trigger('remove', $.extend({}, opts, { model: model, index: index }));
 
                         opts.keepModel !== true && model.destruct();
 
