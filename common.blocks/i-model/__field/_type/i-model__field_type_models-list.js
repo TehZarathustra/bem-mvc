@@ -56,7 +56,9 @@
                 _createModel: function(data) {
                     var model = data instanceof MODEL ?
                         data :
-                        MODEL.create({ name: field.params.modelName, parentModel: field.model }, data);
+                        typeof data === 'string' ?
+                            MODEL.getOrCreate({ name: field.params.modelName, id: data, parentModel: field.model }) :
+                            MODEL.create({ name: field.params.modelName, parentModel: field.model }, data);
 
                     model
                         .on('change', function(e, data) {
@@ -349,7 +351,29 @@
          */
         destruct: function() {
             this.clear();
-        }
+        },
 
+        /**
+         * Правила валидиции для поля типа models-list
+         * @returns {Object}
+         * @private
+         */
+        _getValidationRules: function() {
+            var field = this;
+
+            return $.extend(this._commonRules(), {
+                /**
+                 * валидация каждой из вложенных моделей
+                 */
+                deep: {
+                    value: true,
+                    validate: function(curValue, ruleValue, name) {
+                        return field._value.every(function(model) {
+                            return model.isValid() == ruleValue;
+                        })
+                    }
+                }
+            });
+        }
     });
 })(BEM.MODEL, jQuery);
