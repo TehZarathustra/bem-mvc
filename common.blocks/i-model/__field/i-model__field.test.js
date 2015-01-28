@@ -51,8 +51,9 @@ BEM.TEST.decl('i-model__field', function() {
                 'default': function () { return 1; }
             },
             f8: {
-                ignoreIfChanged: true,
-                type: 'string'
+                calculate: function () {
+                    return true;
+                }
             }
         });
 
@@ -152,15 +153,10 @@ BEM.TEST.decl('i-model__field', function() {
             expect(model.isChanged('f6')).toBe(true);
         });
 
-        it('should ignore changes of field has ignoreIfChanged === true', function () {
-            var model = BEM.MODEL
-                .create('no-type-field', {
-                    f8: 'value'
-                })
-                .fix()
-                .update({f8: 'new value'});
+        it('should serialize calculable fields without dependencies', function () {
+            var model = BEM.MODEL.create('no-type-field');
 
-            expect(model.isChanged()).toBe(false);
+            expect(model.toJSON().f8).toBe(true);
         });
 
         it('should update models', function() {
@@ -185,7 +181,7 @@ BEM.TEST.decl('i-model__field', function() {
                 f5: { val: 'qwe5' },
                 f6: { val: 1 },
                 f7: 1,
-                f8: ''
+                f8: true
             });
         });
 
@@ -221,7 +217,7 @@ BEM.TEST.decl('i-model__field', function() {
                     f5: { val: 'up5' },
                     f6: { val: 1 },
                     f7: 1,
-                    f8: ''
+                    f8: true
                 });
         });
 
