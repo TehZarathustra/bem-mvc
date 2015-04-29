@@ -19,6 +19,16 @@
 
         /**
          *
+         * @todo FIXME реализовать сравнение коллекций
+         * @param {array} value
+         * @return {boolean}
+         */
+        isEqual: function (value) {
+            return false;
+        },
+
+        /**
+         *
          * @param {String} event
          * @param {Object} opts
          * @returns {BEM.MODEL.FIELD}
