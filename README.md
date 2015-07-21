@@ -9,8 +9,8 @@
 *   Валидация моделей
 
 Требование к биндингам
-*   i-bem ориентированость
-*   Наследование собственной функциональсти в использующих i-bem блоках
+*   i-bem ориентированность
+*   Наследование собственной функциональности в использующих i-bem блоках
 *   Провязка с контролами из [bem-controls](https://github.com/bem/bem-controls)
 
 Зависимости
@@ -66,7 +66,6 @@ var model = BEM.MODEL.create('model', {
     name: 'Claudia Schiffer',
     birth: {
         year: 1970,
-        year: 1970,
         month: 8,
         day: 25
     },
@@ -120,7 +119,7 @@ BEM.MODEL.decl('model-with-validation', {
         type: 'number',
         validation: {             // задать функцию валидации
             validate: function(value) {
-                if (value < 170) return false; 
+                return value >= 170; 
             }
         }
     },
@@ -131,10 +130,10 @@ BEM.MODEL.decl('model-with-validation', {
                 required: true,      // стандартное
                 toFat: {             // и кастомное
                     needToValidate: function() {        // проверить нужно ли выполнять валидацию
-                        if (this.get('height') > 170) return true;
+                        return this.get('height') > 170;
                     },
                     validate: function(value) {
-                        if (value > 90) return false;
+                        return value <= 90;
                     }
                 }
             }
@@ -174,7 +173,7 @@ BEMJSON в таком случае будет выглядеть так:
                 block: 'i-glue', 
                 elem: 'model-field',
                 js: {
-                    name: 'weight',         // указываем ему с каким полем провязыватсья
+                    name: 'weight',         // указываем ему с каким полем провязываться
                     type: 'input'
                 }
             }],
@@ -238,7 +237,7 @@ BEMJSON в таком случае будет выглядеть так:
     ]
 }
 ```
-В итоге все блоки `i-model` внутри агрегатора будут объеденены в один и модели будут проинициализированы до инииализации других блоков.
+В итоге все блоки `i-model` внутри агрегатора будут объединены в один и модели будут проинициализированы до инициализации других блоков.
 
 ## Тестирование
 

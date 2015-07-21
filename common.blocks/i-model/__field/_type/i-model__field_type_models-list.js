@@ -55,6 +55,8 @@
          */
         _createValueObject: function(field) {
             var currentField = this,
+                // флаг для предотвращения повторного добавления модели в список
+                isAdding = false,
                 list = {
 
                 /**
@@ -64,6 +66,8 @@
                  * @private
                  */
                 _createModel: function(data) {
+                    isAdding = true; // устанавливаем флаг для обработчика на событие create
+
                     var model = data instanceof MODEL ?
                         data :
                         typeof data === 'string' ?
@@ -83,6 +87,8 @@
                         .on('destruct', function(e, data) {
                             list.remove(data.model.id);
                         });
+
+                    isAdding = false;
 
                     return model;
                 },
@@ -240,10 +246,8 @@
             });
 
             MODEL.on({ name: field.params.modelName, parentModel: field.model }, 'create', function(e, data) {
-                setTimeout(function() {
-                    if (data.model && list._getIndex(data.model.id) === undefined)
-                        list.add(data.model);
-                }, 0);
+                if (!isAdding && data.model && list._getIndex(data.model.id) === undefined)
+                    list.add(data.model);
             });
 
             return list;
@@ -254,13 +258,13 @@
          * @returns {MODEL.FIELD}
          */
         fixData: function() {
-            this._fixedValue = this._raw.map(function(model) {
-                return model.toJSON();
-            }, this);
-
             this._raw.forEach(function (model) {
                 model.fix();
             });
+
+            this._fixedValue = this._raw.map(function(model) {
+                return model.getFixedValue();
+            }, this);
 
             return this;
         },
@@ -271,8 +275,27 @@
          * @returns {Boolean}
          */
         isChanged: function() {
-            return this._value.length() !== this._fixedValue.length || this._value.some(function (model) {
-                return model.isChanged();
+            return this._value.length() !== this.getFixedValue().length || this._value.some(function (model, i) {
+                return model.isChanged() || !model.isEqual(this.getFixedValue()[i]);
+            }, this);
+        },
+
+        /**
+         * Сравнивает значение поля с переданным значением
+         * @param {MODEL.FIELD.types['models-list']|Array} val поле типа models-list или массив
+         * @returns {boolean}
+         */
+        isEqual: function(val) {
+            if (!val) return false;
+
+            var isModelList = val instanceof MODEL.FIELD.types['models-list'],
+                length;
+
+            isModelList && (val = val.get());
+            length = isModelList ? val.length() : val.length;
+
+            return this._value.length() == length && !this._value.some(function(item, i) {
+                return !item.isEqual(isModelList ? val.getByIndex(i) : val[i]);
             });
         },
 
@@ -382,9 +405,13 @@
                 deep: {
                     value: true,
                     validate: function(curValue, ruleValue, name) {
-                        return field._value.every(function(model) {
-                            return model.isValid() == ruleValue;
-                        })
+                        var isValid = true;
+
+                        field._value.forEach(function(model) {
+                            isValid &= model.isValid() == ruleValue;
+                        });
+
+                        return isValid;
                     }
                 }
             });

@@ -96,7 +96,7 @@
                 var fieldDecl = _this.fieldsDecl[name];
 
                 data && !fieldDecl.calculate &&
-                    field.initData(data[name] != undefined ? data[name] : fieldDecl.value);
+                    field.initData(typeof data[name] !== 'undefined' ? data[name] : fieldDecl.value);
             });
 
             this.trigger('init');
@@ -324,6 +324,20 @@
         },
 
         /**
+         * Возвращает объект с фиксированными значениями полей
+         * @returns {Object}
+         */
+        getFixedValue: function() {
+            var res = {};
+
+            $.each(this.fields, function(fieldName, field) {
+                res[fieldName] = field.getFixedValue();
+            });
+
+            return res;
+        },
+
+        /**
          * Назначает обработчик события на модель или поле модели
          * @param {String} [field] имя поля
          * @param {String} e имя события
@@ -419,7 +433,7 @@
          * @private
          */
         _fireChange: function(opts) {
-            this.trigger('change', opts);
+            this.trigger('change', $.extend({}, opts, { changedFields: this.changed }));
             this.changed = [];
         },
 
@@ -473,6 +487,26 @@
             this.trigger('validated', res);
 
             return res;
+        },
+
+        /**
+         * Сравнивает значение модели с переданным значением
+         * @param {BEM.MODEL|Object} val модель или хеш
+         * @returns {boolean}
+         */
+        isEqual: function(val) {
+
+            if (!val) return false;
+
+            var isComparingValueModel = val instanceof BEM.MODEL,
+                selfFieldNames = Object.keys(this.fields),
+                fieldNamesToCompare = Object.keys(isComparingValueModel ? val.fields : val);
+
+            if (selfFieldNames.length != fieldNamesToCompare.length) return false;
+
+            return !selfFieldNames.some(function(fieldName) {
+                return !this.fields[fieldName].isEqual(isComparingValueModel ? val.get(fieldName) : val[fieldName]);
+            }, this);
         }
 
     }, /** @lends BEM.MODEL */ {
@@ -608,7 +642,16 @@
             fieldNames.forEach(function(fieldName) {
                 if (deps[fieldName])
                     fieldDecl[fieldName].dependsTo = deps[fieldName].sort(function(a, b) {
-                        return deps[b] ? (deps[b].indexOf(a) != -1 ? 1 : -1) : 0;
+                        var bDeps = deps[b] || [];
+                        var aDeps = deps[a] || [];
+
+                        if (bDeps.indexOf(a) > -1) {
+                            return 1;
+                        } else if (aDeps.indexOf(b) > -1) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
                     });
             });
 
