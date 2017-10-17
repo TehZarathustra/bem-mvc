@@ -62,30 +62,6 @@ BEM.TEST.decl('i-glue-field_type_radio-button', function() {
                                 controlAttrs: {value: 'friends'},
                                 content: 'только друзьям'
                             }
-                            // {
-                            //     block: 'button',
-                            //     content: 'абаПбаАаВаЛаЕаНаНбаЕ'
-                            // },
-                            // {
-                            //     elem: 'control',
-                            //     content: [
-                            //         {
-                            //             elem: 'option',
-                            //             attrs: { value: 'a' },
-                            //             content: 'a'
-                            //         },
-                            //         {
-                            //             elem: 'option',
-                            //             attrs: { value: 'b' },
-                            //             content: 'b'
-                            //         },
-                            //         {
-                            //             elem: 'option',
-                            //             attrs: { value: 'c' },
-                            //             content: 'c'
-                            //         }
-                            //     ]
-                            // }
                         ]
                     }
                 ]
