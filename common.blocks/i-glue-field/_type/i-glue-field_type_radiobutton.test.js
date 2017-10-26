@@ -1,12 +1,12 @@
-BEM.TEST.decl('i-glue-field_type_radio-button', function() {
-    if (!BEM.blocks['radio-button']) return;
+BEM.TEST.decl('i-glue-field_type_radiobutton', function() {
+    if (!BEM.blocks['radiobutton']) return;
 
-    BEM.MODEL.decl('glue-field-radio-button-model', {
+    BEM.MODEL.decl('glue-field-radiobutton-model', {
         num: 'number',
         str: 'string'
     });
 
-    describe('glue field type radio-button', function() {
+    describe('glue field type radiobutton', function() {
 
         BEM.DOM.decl('b-glued-field', {
             onSetMod: {
@@ -22,7 +22,7 @@ BEM.TEST.decl('i-glue-field_type_radio-button', function() {
         });
 
         it('should glue field', function() {
-            model = BEM.MODEL.create('glue-field-radio-button-model', {
+            model = BEM.MODEL.create('glue-field-radiobutton-model', {
                 num: 1,
                 str: 's'
             });
@@ -32,20 +32,20 @@ BEM.TEST.decl('i-glue-field_type_radio-button', function() {
                 mix: [{
                     block: 'i-glue',
                     js: {
-                        modelName: 'glue-field-radio-button-model',
+                        modelName: 'glue-field-radiobutton-model',
                         modelId: model.id
                     }
                 }],
                 js: true,
                 content: [
                     {
-                        block: 'radio-button',
+                        block: 'radiobutton',
                         mix: [{
                             block: 'i-glue',
                             elem: 'model-field',
                             js: {
                                 name: 'str',
-                                type: 'radio-button'
+                                type: 'radiobutton'
                             }
                         }],
                         name: 'title',
