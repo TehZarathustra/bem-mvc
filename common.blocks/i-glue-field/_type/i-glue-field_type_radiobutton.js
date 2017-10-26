@@ -1,4 +1,4 @@
-BEM.DOM.decl({ block: 'i-glue-field_type_radio-button', baseBlock: 'i-glue-field' }, {
+BEM.DOM.decl({ block: 'i-glue-field_type_radiobutton', baseBlock: 'i-glue-field' }, {
     onSetMod: {
         js: function() {
             this.__base();

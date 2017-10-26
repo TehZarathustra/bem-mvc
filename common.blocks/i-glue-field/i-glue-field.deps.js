@@ -9,8 +9,8 @@
                     'inline',
                     'input',
                     'select',
-                    'radio-button',
-                    'mod',
+                    'radiobutton',
+                    'mod'
                 ]
             }
         }
