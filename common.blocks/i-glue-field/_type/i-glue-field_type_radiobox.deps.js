@@ -1,7 +1,7 @@
 ({
 	shouldDeps: [
 		{
-			block: 'radio-button'
+			block: 'radiobox'
 		}
 	]
 })

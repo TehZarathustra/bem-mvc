@@ -1,6 +1,4 @@
 ({
-    mustDeps: [
-    ],
     shouldDeps: [
         {
             mods: {
@@ -10,6 +8,7 @@
                     'input',
                     'select',
                     'radiobutton',
+                    'radiobox',
                     'mod'
                 ]
             }

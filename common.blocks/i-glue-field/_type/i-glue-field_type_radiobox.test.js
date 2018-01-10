@@ -1,12 +1,12 @@
-BEM.TEST.decl('i-glue-field_type_radiobutton', function() {
-    if (!BEM.blocks['radiobutton']) return;
+BEM.TEST.decl('i-glue-field_type_radiobox', function() {
+    if (!BEM.blocks['radiobox']) return;
 
-    BEM.MODEL.decl('glue-field-radiobutton-model', {
+    BEM.MODEL.decl('glue-field-radiobox-model', {
         num: 'number',
         str: 'string'
     });
 
-    describe('glue field type radiobutton', function() {
+    describe('glue field type radiobox', function() {
         BEM.DOM.decl('b-glued-field');
 
         var model;
@@ -17,7 +17,7 @@ BEM.TEST.decl('i-glue-field_type_radiobutton', function() {
         });
 
         it('should glue field', function() {
-            model = BEM.MODEL.create('glue-field-radiobutton-model', {
+            model = BEM.MODEL.create('glue-field-radiobox-model', {
                 num: 1,
                 str: 's'
             });
@@ -27,20 +27,20 @@ BEM.TEST.decl('i-glue-field_type_radiobutton', function() {
                 mix: [{
                     block: 'i-glue',
                     js: {
-                        modelName: 'glue-field-radiobutton-model',
+                        modelName: 'glue-field-radiobox-model',
                         modelId: model.id
                     }
                 }],
                 js: true,
                 content: [
                     {
-                        block: 'radiobutton',
+                        block: 'radiobox',
                         mix: [{
                             block: 'i-glue',
                             elem: 'model-field',
                             js: {
                                 name: 'str',
-                                type: 'radiobutton'
+                                type: 'radiobox'
                             }
                         }],
                         name: 'title',
@@ -63,12 +63,12 @@ BEM.TEST.decl('i-glue-field_type_radiobutton', function() {
             }));
 
             var block = $('.b-glued-field').bem('b-glued-field'),
-                radioButton = block.findBlockInside('radio-button');
+                radiobox = block.findBlockInside('radiobox');
 
             model.set('str', 'all');
-            expect(radioButton.val()).toEqual('all');
+            expect(radiobox.val()).toEqual('all');
 
-            radioButton.val('friends');
+            radiobox.val('friends');
             expect(model.get('str')).toEqual('friends');
         });
 

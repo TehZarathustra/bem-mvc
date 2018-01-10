@@ -193,6 +193,8 @@ BEMJSON в таком случае будет выглядеть так:
 *  input – провязка с блоком input
 *  select – провязка с блоком select
 *  checkbox – провязка с блоком checkbox
+*  radiobutton - провязка с блоком radio-button
+*  radiobox - провязка с блоком radiobox
 *  inline – вставка значения поля в html
 *  mod – изменение модификатора блока
 
